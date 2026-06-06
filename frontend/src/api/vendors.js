@@ -8,4 +8,6 @@ export const vendorApi = {
   create: (data) => api.post("/vendors", data),
   update: (id, data) => api.put(`/vendors/${id}`, data),
   remove: (id) => api.delete(`/vendors/${id}`),
+  getCategories: () => api.get("/vendors/categories"),
+  createCategory: (data) => api.post("/vendors/categories", data),
 };

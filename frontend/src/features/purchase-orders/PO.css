@@ -1,0 +1,160 @@
+/* Purchase Order Styles and A4 Preview Sheets */
+
+.po-layout-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 968px) {
+  .po-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.po-document-sheet-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 16px;
+  background-color: var(--vb-ink-950);
+  border: 1px solid var(--vb-border);
+  border-radius: var(--vb-radius-lg);
+  display: flex;
+  justify-content: center;
+}
+
+.po-document-sheet {
+  width: 210mm; /* A4 Width */
+  min-height: 297mm; /* A4 Height */
+  padding: 20mm;
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  font-family: var(--vb-font-ui);
+  display: flex;
+  flex-direction: column;
+}
+
+.po-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.po-sheet-brand {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 24px;
+}
+
+.po-sheet-title {
+  color: #0f172a;
+  font-weight: 850;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.po-sheet-addresses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.po-address-label {
+  font-size: 10px;
+  font-weight: 750;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.po-address-block {
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.5;
+  background-color: #f8fafc;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.po-sheet-table-wrap {
+  margin-bottom: 28px;
+  flex-grow: 1;
+}
+
+.po-sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.po-sheet-table th {
+  background-color: #f1f5f9;
+  color: #475569;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 10px 12px;
+  border-bottom: 2px solid #cbd5e1;
+  text-align: left;
+}
+
+.po-sheet-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.po-sheet-table tr:hover {
+  background-color: transparent;
+}
+
+.po-sheet-totals {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+}
+
+/* Print CSS overrides */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  .no-print, header, aside, .mobile-header, .sidebar, .collapse-toggle-btn {
+    display: none !important;
+  }
+  
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  
+  .po-document-sheet-wrap {
+    padding: 0 !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
+  
+  .po-document-sheet {
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+  
+  .po-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import "./Auth.css";
 
 export default function Login() {
@@ -14,6 +14,21 @@ export default function Login() {
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleAutofillAndSubmit = async (email) => {
+    setError(null);
+    setSubmitting(true);
+    const password = "password123";
+    setFormData({ email, password });
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Invalid credentials. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -76,6 +91,28 @@ export default function Login() {
             {submitting ? "Logging in..." : "Login to Workspace"}
           </button>
         </form>
+
+        <div className="demo-credentials-box">
+          <div className="demo-title">Demo Credentials (Click to Autofill)</div>
+          <div className="demo-buttons-grid">
+            <button type="button" className="demo-autofill-btn" onClick={() => handleAutofillAndSubmit("buyer@vendorbridge.com")}>
+              <span>Buyer (Procurement)</span>
+              <span className="demo-email">buyer@vendorbridge.com</span>
+            </button>
+            <button type="button" className="demo-autofill-btn" onClick={() => handleAutofillAndSubmit("vendor@techsupply.com")}>
+              <span>Vendor (TechSupply)</span>
+              <span className="demo-email">vendor@techsupply.com</span>
+            </button>
+            <button type="button" className="demo-autofill-btn" onClick={() => handleAutofillAndSubmit("approver@vendorbridge.com")}>
+              <span>Finance Manager (Approver)</span>
+              <span className="demo-email">approver@vendorbridge.com</span>
+            </button>
+            <button type="button" className="demo-autofill-btn" onClick={() => handleAutofillAndSubmit("admin@vendorbridge.com")}>
+              <span>Admin (All Access)</span>
+              <span className="demo-email">admin@vendorbridge.com</span>
+            </button>
+          </div>
+        </div>
 
         <div className="auth-footer">
           Don't have an account? <Link to="/register">Register here</Link>

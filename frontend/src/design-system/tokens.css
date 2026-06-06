@@ -1,0 +1,57 @@
+/* Design System Tokens */
+:root {
+  --vb-ink-950-h: 215;
+  --vb-ink-950-s: 36%;
+  --vb-ink-950-l: 5%;
+  --vb-ink-950: hsl(var(--vb-ink-950-h), var(--vb-ink-950-s), var(--vb-ink-950-l)); /* #070A0F */
+
+  --vb-ink-900-h: 215;
+  --vb-ink-900-s: 33%;
+  --vb-ink-900-l: 7%;
+  --vb-ink-900: hsl(var(--vb-ink-900-h), var(--vb-ink-900-s), var(--vb-ink-900-l)); /* #0B1017 */
+
+  --vb-ink-850-h: 215;
+  --vb-ink-850-s: 33%;
+  --vb-ink-850-l: 10%;
+  --vb-ink-850: hsl(var(--vb-ink-850-h), var(--vb-ink-850-s), var(--vb-ink-850-l)); /* #101720 */
+
+  --vb-ink-800-h: 215;
+  --vb-ink-800-s: 32%;
+  --vb-ink-800-l: 13%;
+  --vb-ink-800: hsl(var(--vb-ink-800-h), var(--vb-ink-800-s), var(--vb-ink-800-l)); /* #16202B */
+
+  --vb-border: #263241;
+  --vb-border-soft: rgba(255, 255, 255, 0.07);
+
+  /* Text colors */
+  --vb-text: #F5F7FA;
+  --vb-text-muted: #A5AFBD;
+  --vb-text-subtle: #6F7B8C;
+
+  /* Accent colors */
+  --vb-teal: #20D3B2;
+  --vb-teal-glow: rgba(32, 211, 178, 0.15);
+  --vb-cobalt: #3B82F6;
+  --vb-cobalt-glow: rgba(59, 130, 246, 0.15);
+  --vb-amber: #F4B740;
+  --vb-amber-glow: rgba(244, 183, 64, 0.15);
+  --vb-coral: #FF6B6B;
+  --vb-coral-glow: rgba(255, 107, 107, 0.15);
+  --vb-lime: #8EEA6A;
+  --vb-lime-glow: rgba(142, 234, 106, 0.15);
+  --vb-violet: #8B5CF6;
+
+  /* Font styling */
+  --vb-font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --vb-font-mono: "Geist Mono", "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radii */
+  --vb-radius-sm: 6px;
+  --vb-radius-md: 8px;
+  --vb-radius-lg: 12px;
+
+  /* Shadow layers */
+  --vb-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --vb-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --vb-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import "./Auth.css";
 
 export default function Register() {
@@ -12,7 +12,7 @@ export default function Register() {
     name: "",
     email: "",
     password: "",
-    role: "BUYER",
+    role: "PROCUREMENT_OFFICER",
   });
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -91,7 +91,7 @@ export default function Register() {
           <div className="form-group">
             <label htmlFor="role">Workspace Role</label>
             <select id="role" name="role" value={formData.role} onChange={handleChange}>
-              <option value="BUYER">Buyer (Procurement Officer)</option>
+              <option value="PROCUREMENT_OFFICER">Buyer (Procurement Officer)</option>
               <option value="APPROVER">Approver (Manager)</option>
               <option value="ADMIN">Administrator</option>
             </select>

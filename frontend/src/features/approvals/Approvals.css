@@ -1,0 +1,4 @@
+/* Approvals styling */
+.approval-list {
+  animation: fadeIn 0.25s ease-out;
+}

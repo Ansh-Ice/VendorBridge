@@ -1,30 +1,21 @@
-/* VendorBridge — Global Styles */
+@import "./design-system/tokens.css";
+@import "./design-system/base.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* ── Reset & Base ───────────────────────── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ── Legacy Variable Mapping ───────────────────────── */
 :root {
-  --bg-primary: #0f1117;
-  --bg-card: #1a1d2e;
-  --bg-input: #12141f;
-  --border: rgba(255, 255, 255, 0.06);
-  --text-primary: #f0f1f5;
-  --text-secondary: #8b8fa3;
-  --text-muted: #6b6f84;
-  --accent-blue: #60a5fa;
-  --accent-purple: #8b5cf6;
-  --accent-green: #10b981;
-  --accent-amber: #f59e0b;
-  --accent-red: #ef4444;
-  --radius: 10px;
+  --bg-primary: var(--vb-ink-950);
+  --bg-card: var(--vb-ink-900);
+  --bg-input: var(--vb-ink-950);
+  --border: var(--vb-border);
+  --text-primary: var(--vb-text);
+  --text-secondary: var(--vb-text-muted);
+  --text-muted: var(--vb-text-subtle);
+  --accent-blue: var(--vb-cobalt);
+  --accent-purple: var(--vb-violet);
+  --accent-green: var(--vb-teal);
+  --accent-amber: var(--vb-amber);
+  --accent-red: var(--vb-coral);
+  --radius: var(--vb-radius-lg);
 }
 
 html {

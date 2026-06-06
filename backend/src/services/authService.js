@@ -4,6 +4,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/db");
 
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === "production") {
+  throw new Error("FATAL: JWT_SECRET environment variable must be set in production mode.");
+}
 const JWT_SECRET = process.env.JWT_SECRET || "vendorbridge_fallback_secret";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
 const SALT_ROUNDS = 12;
@@ -11,7 +14,7 @@ const SALT_ROUNDS = 12;
 const authService = {
   /**
    * Register a new user
-   * @param {Object} data - { name, email, password, role? }
+   * @param {Object} data - { name, email, password, role?, organizationName?, organizationId?, vendorId? }
    * @returns {Object} - { user, token }
    */
   async register(data) {
@@ -29,16 +32,42 @@ const authService = {
     // Hash password
     const hashedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
 
+    // Resolve or create organization
+    let orgId = data.organizationId;
+    if (!orgId) {
+      let firstOrg = await prisma.organization.findFirst();
+      if (!firstOrg) {
+        firstOrg = await prisma.organization.create({
+          data: {
+            name: data.organizationName || "Default Organization",
+            legalName: data.organizationName || "Default Org Ltd",
+            stateCode: "MH", // Maharashtra default
+          },
+        });
+      }
+      orgId = firstOrg.id;
+    }
+
+    // Map legacy BUYER role to PROCUREMENT_OFFICER
+    let userRole = data.role || "PROCUREMENT_OFFICER";
+    if (userRole === "BUYER") {
+      userRole = "PROCUREMENT_OFFICER";
+    }
+
     // Create user
     const user = await prisma.user.create({
       data: {
+        organizationId: orgId,
+        vendorId: data.vendorId || null,
         name: data.name.trim(),
         email: data.email.toLowerCase().trim(),
         password: hashedPassword,
-        role: data.role || "BUYER",
+        role: userRole,
       },
       select: {
         id: true,
+        organizationId: true,
+        vendorId: true,
         name: true,
         email: true,
         role: true,
@@ -79,6 +108,12 @@ const authService = {
       throw error;
     }
 
+    // Update lastLoginAt
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
+
     // Return user without password
     const { password: _, ...userWithoutPassword } = user;
 
@@ -98,11 +133,32 @@ const authService = {
       where: { id: userId },
       select: {
         id: true,
+        organizationId: true,
+        vendorId: true,
         name: true,
         email: true,
         role: true,
+        status: true,
+        lastLoginAt: true,
         createdAt: true,
         updatedAt: true,
+        organization: {
+          select: {
+            name: true,
+            legalName: true,
+            gstin: true,
+            billingAddress: true,
+            stateCode: true,
+            currency: true,
+          }
+        },
+        vendor: {
+          select: {
+            name: true,
+            email: true,
+            status: true,
+          }
+        }
       },
     });
 
@@ -120,7 +176,13 @@ const authService = {
    */
   generateToken(user) {
     return jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        organizationId: user.organizationId,
+        vendorId: user.vendorId,
+      },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
     );

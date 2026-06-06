@@ -1,0 +1,4 @@
+/* Invoice CSS */
+.invoice-detail-container {
+  animation: fadeIn 0.25s ease-out;
+}

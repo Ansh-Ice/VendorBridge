@@ -1,64 +1,116 @@
-// Sidebar layout with navigation
-
-import { NavLink, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import {
+  LayoutDashboard,
+  Building2,
+  ClipboardList,
+  FileCheck,
+  CheckSquare,
+  FileSpreadsheet,
+  Receipt,
+  Users,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  X
+} from "lucide-react";
 import "./Layout.css";
-
-const navItems = [
-  { to: "/",         icon: "📊", label: "Dashboard" },
-  { to: "/vendors",  icon: "🏢", label: "Vendors" },
-  { to: "/rfqs",     icon: "📋", label: "RFQs" },
-  { to: "/quotations", icon: "💰", label: "Quotations" },
-];
 
 export default function Layout() {
   const { user, logout } = useAuth();
-  
-  // Get first letter of user name for avatar
+  const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const allNavItems = [
+    { to: "/", icon: LayoutDashboard, label: "Dashboard", roles: ["ADMIN", "PROCUREMENT_OFFICER", "APPROVER", "VENDOR"] },
+    { to: "/vendors", icon: Building2, label: "Vendors", roles: ["ADMIN", "PROCUREMENT_OFFICER", "APPROVER"] },
+    { to: "/rfqs", icon: ClipboardList, label: "RFQs", roles: ["ADMIN", "PROCUREMENT_OFFICER", "APPROVER"] },
+    { to: "/vendor/rfqs", icon: ClipboardList, label: "Assigned RFQs", roles: ["VENDOR"] },
+    { to: "/quotations", icon: FileSpreadsheet, label: "Quotations", roles: ["ADMIN", "PROCUREMENT_OFFICER", "VENDOR"] },
+    { to: "/approvals", icon: CheckSquare, label: "Approvals", roles: ["ADMIN", "APPROVER"] },
+    { to: "/purchase-orders", icon: FileCheck, label: "Purchase Orders", roles: ["ADMIN", "PROCUREMENT_OFFICER", "VENDOR"] },
+    { to: "/invoices", icon: Receipt, label: "Invoices", roles: ["ADMIN", "PROCUREMENT_OFFICER", "VENDOR"] },
+    { to: "/admin/users", icon: Users, label: "Users", roles: ["ADMIN"] },
+    { to: "/settings", icon: Settings, label: "Settings", roles: ["ADMIN", "PROCUREMENT_OFFICER", "APPROVER", "VENDOR"] },
+  ];
+
+  const filteredNavItems = allNavItems.filter((item) =>
+    user?.role ? item.roles.includes(user.role) : false
+  );
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   const avatarLetter = user?.name ? user.name.charAt(0).toUpperCase() : "U";
-  
-  // Format role name
-  const formattedRole = user?.role ? user.role.charAt(0) + user.role.slice(1).toLowerCase() : "User";
+  const formattedRole = user?.role ? user.role.replace(/_/g, " ") : "User";
 
   return (
     <div className="layout">
-      <aside className="sidebar">
+      {/* Mobile Top Navbar */}
+      <header className="mobile-header">
+        <button className="mobile-menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+        <span className="mobile-logo">VendorBridge 🌉</span>
+      </header>
+
+      {/* Sidebar */}
+      <aside className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${mobileOpen ? "sidebar--mobile-open" : ""}`}>
         <div className="sidebar-brand">
-          <span className="brand-icon">🌉</span>
-          <h1>VendorBridge</h1>
+          <Building2 className="brand-logo-icon" size={24} />
+          {!collapsed && <span className="brand-title">VendorBridge</span>}
+          <button className="collapse-toggle-btn" onClick={() => setCollapsed(!collapsed)}>
+            {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          </button>
         </div>
+
         <nav className="sidebar-nav">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                `nav-item ${isActive ? "nav-item--active" : ""}`
-              }
-            >
-              <span className="nav-icon">{item.icon}</span>
-              <span className="nav-label">{item.label}</span>
-            </NavLink>
-          ))}
+          {filteredNavItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  `nav-item ${isActive ? "nav-item--active" : ""}`
+                }
+                onClick={() => setMobileOpen(false)}
+                title={collapsed ? item.label : ""}
+              >
+                <Icon className="nav-icon" size={18} />
+                {!collapsed && <span className="nav-label">{item.label}</span>}
+              </NavLink>
+            );
+          })}
         </nav>
+
         <div className="sidebar-footer">
           <div className="user-badge">
             <div className="user-avatar">{avatarLetter}</div>
-            <div className="user-info">
-              <span className="user-name">{user?.name || "User"}</span>
-              <span className="user-role">{formattedRole}</span>
-            </div>
-            <button className="logout-btn" onClick={logout} title="Logout">
-              🚪
+            {!collapsed && (
+              <div className="user-info">
+                <span className="user-name">{user?.name || "User"}</span>
+                <span className="user-role">{formattedRole}</span>
+              </div>
+            )}
+            <button className="logout-btn" onClick={handleLogout} title="Logout">
+              <LogOut size={16} />
             </button>
           </div>
         </div>
       </aside>
-      <main className="main-content">
+
+      {/* Main Content Area */}
+      <main className={`main-content ${collapsed ? "main-content--expanded" : ""}`}>
         <Outlet />
       </main>
     </div>
   );
 }
-

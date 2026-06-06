@@ -9,7 +9,7 @@ const rfqController = {
    */
   async getAll(req, res, next) {
     try {
-      const rfqs = await rfqService.getAll(req.query);
+      const rfqs = await rfqService.getAll(req.user.organizationId, req.user, req.query);
       res.json({ success: true, data: rfqs, count: rfqs.length });
     } catch (err) {
       next(err);
@@ -21,8 +21,8 @@ const rfqController = {
    */
   async getById(req, res, next) {
     try {
-      const rfq = await rfqService.getById(req.params.id);
-      if (!rfq) throw new ApiError(404, "RFQ not found");
+      const rfq = await rfqService.getById(req.params.id, req.user.organizationId, req.user);
+      if (!rfq) throw new ApiError(404, "RFQ not found or access denied");
       res.json({ success: true, data: rfq });
     } catch (err) {
       next(err);
@@ -34,7 +34,11 @@ const rfqController = {
    */
   async create(req, res, next) {
     try {
-      const rfq = await rfqService.create(req.body);
+      const data = {
+        ...req.body,
+        createdById: req.user.id,
+      };
+      const rfq = await rfqService.create(data, req.user.organizationId);
       res.status(201).json({ success: true, data: rfq });
     } catch (err) {
       next(err);
@@ -46,7 +50,7 @@ const rfqController = {
    */
   async update(req, res, next) {
     try {
-      const rfq = await rfqService.update(req.params.id, req.body);
+      const rfq = await rfqService.update(req.params.id, req.body, req.user.organizationId);
       res.json({ success: true, data: rfq });
     } catch (err) {
       next(err);
@@ -58,7 +62,7 @@ const rfqController = {
    */
   async remove(req, res, next) {
     try {
-      await rfqService.remove(req.params.id);
+      await rfqService.remove(req.params.id, req.user.organizationId);
       res.json({ success: true, message: "RFQ deleted" });
     } catch (err) {
       next(err);

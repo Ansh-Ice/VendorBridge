@@ -21,6 +21,7 @@ export function usePolling(fetchFn, interval = 10000, enabled = true) {
   }, [fetchFn]);
 
   const refetch = useCallback(async () => {
+    await Promise.resolve(); // Defer state updates to avoid synchronous setState in useEffect
     try {
       setError(null);
       const result = await savedFn.current();
@@ -33,6 +34,7 @@ export function usePolling(fetchFn, interval = 10000, enabled = true) {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     refetch(); // Initial fetch
 
     if (!enabled) return;
