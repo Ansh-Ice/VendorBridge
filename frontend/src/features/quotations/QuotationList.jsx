@@ -9,6 +9,7 @@ export default function QuotationList() {
   const fetchQuotations = useCallback(() => quotationApi.getAll(), []);
   const { data, loading, error, refetch } = usePolling(fetchQuotations, 10000);
   const quotations = data?.data || [];
+  console.log("QuotationList data:", quotations);
 
   const handleStatusChange = async (id, status) => {
     try {
@@ -45,7 +46,9 @@ export default function QuotationList() {
             <div key={q.id} className="quotation-card">
               <div className="quotation-header">
                 <div>
-                  <h3 className="quotation-amount">${q.amount.toLocaleString()}</h3>
+                  <h3 className="quotation-amount">
+                    ${q.amount?.toLocaleString() ?? q.grandTotal?.toLocaleString() ?? "N/A"}
+                  </h3>
                   <span className="td-secondary">by {q.vendor?.name || "Unknown"}</span>
                 </div>
                 <span className={`badge badge-${q.status.toLowerCase()}`}>
