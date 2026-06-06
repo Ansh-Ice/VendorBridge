@@ -1,6 +1,7 @@
 // User service — basic user CRUD (no auth)
 
 const prisma = require("../config/db");
+const bcrypt = require("bcryptjs");
 
 const userService = {
   /**
@@ -19,7 +20,13 @@ const userService = {
   async getById(id) {
     return prisma.user.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
         rfqs: { select: { id: true, title: true, status: true } },
         approvals: true,
       },
@@ -30,11 +37,20 @@ const userService = {
    * Create a user (simple — no password/auth)
    */
   async create(data) {
+    const hashedPassword = await bcrypt.hash(data.password || "changeme123", 12);
     return prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
+        password: hashedPassword,
         role: data.role || "BUYER",
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
       },
     });
   },
@@ -45,10 +61,12 @@ const userService = {
   async ensureDefaultUser() {
     const count = await prisma.user.count();
     if (count === 0) {
+      const hashedPassword = await bcrypt.hash("admin123", 12);
       return prisma.user.create({
         data: {
           name: "Admin User",
           email: "admin@vendorbridge.com",
+          password: hashedPassword,
           role: "ADMIN",
         },
       });
@@ -58,3 +76,4 @@ const userService = {
 };
 
 module.exports = userService;
+

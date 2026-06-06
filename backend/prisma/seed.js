@@ -1,22 +1,25 @@
 // Seed script — populates database with sample data for development
 
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function seed() {
   console.log("🌱 Seeding database...\n");
 
+  const hashedPassword = await bcrypt.hash("password123", 12);
+
   // Create users
   const admin = await prisma.user.upsert({
     where: { email: "admin@vendorbridge.com" },
     update: {},
-    create: { name: "Admin User", email: "admin@vendorbridge.com", role: "ADMIN" },
+    create: { name: "Admin User", email: "admin@vendorbridge.com", password: hashedPassword, role: "ADMIN" },
   });
 
   const buyer = await prisma.user.upsert({
     where: { email: "buyer@vendorbridge.com" },
     update: {},
-    create: { name: "Procurement Lead", email: "buyer@vendorbridge.com", role: "BUYER" },
+    create: { name: "Procurement Lead", email: "buyer@vendorbridge.com", password: hashedPassword, role: "BUYER" },
   });
 
   console.log("✅ Users created:", admin.name, ",", buyer.name);
