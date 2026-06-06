@@ -95,38 +95,6 @@
   animation: authShake 0.4s ease;
 }
 
-.auth-success-message {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.22);
-  border-radius: 10px;
-  padding: 12px 16px;
-  color: #34d399;
-  font-size: 0.82rem;
-  line-height: 1.4;
-  margin-bottom: 20px;
-}
-
-.auth-link-button {
-  background: transparent;
-  border: none;
-  color: #60a5fa;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.84rem;
-  font-weight: 600;
-  padding: 4px 0;
-  text-align: center;
-}
-
-.auth-link-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.auth-link-button:hover:not(:disabled) {
-  opacity: 0.82;
-}
-
 .auth-footer {
   text-align: center;
   margin-top: 24px;
@@ -220,61 +188,4 @@
   overflow: hidden;
   white-space: nowrap;
   width: 100%;
-}
-
-.password-page {
-  min-height: 100vh;
-  padding: 32px;
-  background: var(--vb-ink-950);
-}
-
-.password-panel {
-  width: 100%;
-  max-width: 520px;
-  background: var(--vb-ink-900);
-  border: 1px solid var(--vb-border);
-  border-radius: 8px;
-  padding: 28px;
-  box-shadow: var(--vb-shadow-card);
-}
-
-.password-panel-header {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  margin-bottom: 24px;
-}
-
-.password-panel-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  background: rgba(96, 165, 250, 0.12);
-  color: #60a5fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
-
-.password-panel-header h1 {
-  color: var(--vb-text);
-  font-size: 1.35rem;
-  margin: 0 0 6px;
-}
-
-.password-panel-header p {
-  color: var(--vb-text-muted);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-@media (max-width: 640px) {
-  .password-page {
-    padding: 20px;
-  }
-
-  .password-panel {
-    padding: 22px;
-  }
 }

@@ -74,7 +74,7 @@ export default function Login() {
           <div className="form-group">
             <div className="label-row">
               <label htmlFor="password">Password</label>
-              <Link to="/forgot-password" className="forgot-link">Forgot?</Link>
+              <a href="#forgot" className="forgot-link">Forgot?</a>
             </div>
             <input
               id="password"

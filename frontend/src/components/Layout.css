@@ -213,7 +213,6 @@
   text-transform: capitalize;
 }
 
-.change-password-btn,
 .logout-btn {
   background: transparent;
   border: none;
@@ -225,11 +224,6 @@
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
-}
-
-.change-password-btn:hover {
-  background-color: var(--vb-ink-800);
-  color: var(--vb-cobalt);
 }
 
 .logout-btn:hover {
@@ -263,7 +257,6 @@
   padding: 8px;
 }
 
-.sidebar--collapsed .change-password-btn,
 .sidebar--collapsed .logout-btn {
   display: none;
 }

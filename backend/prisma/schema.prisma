@@ -84,28 +84,6 @@ enum UserStatus {
   SUSPENDED
 }
 
-enum AuthOtpPurpose {
-  REGISTER
-  RESET_PASSWORD
-}
-
-model AuthOtp {
-  id                String         @id @default(uuid())
-  email             String
-  purpose           AuthOtpPurpose
-  codeHash          String
-  pendingDataJson   String?
-  attempts          Int            @default(0)
-  expiresAt         DateTime
-  resendAvailableAt DateTime
-  consumedAt        DateTime?
-  createdAt         DateTime       @default(now())
-  updatedAt         DateTime       @updatedAt
-
-  @@index([email, purpose, consumedAt])
-  @@map("auth_otps")
-}
-
 // ──────────────────────────────────────
 // Vendors
 // ──────────────────────────────────────
