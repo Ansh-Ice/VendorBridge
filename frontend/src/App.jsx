@@ -21,9 +21,6 @@ import InvoiceDetail from "./features/invoices/InvoiceDetail";
 import Landing from "./features/landing/Landing";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
-import ForgotPassword from "./features/auth/ForgotPassword";
-import ResetPassword from "./features/auth/ResetPassword";
-import ChangePassword from "./features/auth/ChangePassword";
 import UserList from "./features/users/UserList";
 
 
@@ -37,8 +34,6 @@ export default function App() {
             <Route path="landing" element={<Landing />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="forgot-password" element={<ForgotPassword />} />
-            <Route path="reset-password" element={<ResetPassword />} />
 
             {/* Protected Main Application Routes */}
             <Route
@@ -49,7 +44,6 @@ export default function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="change-password" element={<ChangePassword />} />
               
               {/* Procurement Roles + Vendor Role */}
               <Route element={<ProtectedRoute allowedRoles={["ADMIN", "PROCUREMENT_OFFICER", "APPROVER", "VENDOR"]} />}>
