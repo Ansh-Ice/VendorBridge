@@ -1,0 +1,161 @@
+// VendorBridge - Prisma Schema
+// Procurement & Vendor Management ERP
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────────────────
+// Users - basic user model (no auth)
+// ──────────────────────────────────────
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      Role     @default(BUYER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rfqs      RFQ[]       // RFQs created by this user
+  approvals Approval[]  // Approvals handled by this user
+
+  @@map("users")
+}
+
+enum Role {
+  ADMIN
+  BUYER
+  APPROVER
+}
+
+// ──────────────────────────────────────
+// Vendors
+// ──────────────────────────────────────
+model Vendor {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  phone       String?
+  address     String?
+  category    String?  // e.g. "IT Services", "Office Supplies"
+  status      VendorStatus @default(ACTIVE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rfqVendors  RFQVendor[]   // RFQs this vendor is invited to
+  quotations  Quotation[]   // Quotations submitted by this vendor
+
+  @@map("vendors")
+}
+
+enum VendorStatus {
+  ACTIVE
+  INACTIVE
+  BLACKLISTED
+}
+
+// ──────────────────────────────────────
+// RFQ (Request for Quotation)
+// Many-to-many with Vendors via join table
+// ──────────────────────────────────────
+model RFQ {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  budget      Float?
+  deadline    DateTime?
+  status      RFQStatus @default(DRAFT)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+
+  rfqVendors  RFQVendor[]   // Vendors invited to this RFQ
+  quotations  Quotation[]   // Quotations received for this RFQ
+  approvals   Approval[]    // Approval chain for this RFQ
+
+  @@map("rfqs")
+}
+
+enum RFQStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  AWARDED
+}
+
+// ──────────────────────────────────────
+// RFQ ↔ Vendor join table (many-to-many)
+// ──────────────────────────────────────
+model RFQVendor {
+  id       String @id @default(uuid())
+  rfqId    String
+  vendorId String
+
+  rfq    RFQ    @relation(fields: [rfqId], references: [id], onDelete: Cascade)
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  invitedAt DateTime @default(now())
+
+  @@unique([rfqId, vendorId])
+  @@map("rfq_vendors")
+}
+
+// ──────────────────────────────────────
+// Quotations - submitted by vendors for an RFQ
+// ──────────────────────────────────────
+model Quotation {
+  id          String          @id @default(uuid())
+  amount      Float
+  notes       String?
+  status      QuotationStatus @default(PENDING)
+  submittedAt DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  rfqId    String
+  vendorId String
+
+  rfq    RFQ    @relation(fields: [rfqId], references: [id], onDelete: Cascade)
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([rfqId, vendorId]) // One quotation per vendor per RFQ
+  @@map("quotations")
+}
+
+enum QuotationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ──────────────────────────────────────
+// Approvals - for RFQ approval workflow
+// ──────────────────────────────────────
+model Approval {
+  id        String         @id @default(uuid())
+  status    ApprovalStatus @default(PENDING)
+  comments  String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  rfqId      String
+  approverId String
+
+  rfq      RFQ  @relation(fields: [rfqId], references: [id], onDelete: Cascade)
+  approver User @relation(fields: [approverId], references: [id])
+
+  @@unique([rfqId, approverId])
+  @@map("approvals")
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

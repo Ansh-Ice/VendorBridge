@@ -1,0 +1,66 @@
+/* Quotation page styles */
+
+.quotations-page {
+  animation: fadeIn 0.3s ease;
+}
+
+.quotation-cards {
+  display: grid;
+  gap: 16px;
+}
+
+.quotation-card {
+  background: #1a1d2e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 24px;
+  transition: all 0.25s ease;
+}
+
+.quotation-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.quotation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.quotation-amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #10b981;
+  margin: 0;
+}
+
+.quotation-rfq {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.quotation-notes {
+  font-size: 0.85rem;
+  color: #8b8fa3;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+}
+
+.quotation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.quotation-actions {
+  display: flex;
+  gap: 8px;
+}

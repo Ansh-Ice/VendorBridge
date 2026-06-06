@@ -1,0 +1,123 @@
+/* Dashboard styles */
+
+.dashboard {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ── Page Header ────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f0f1f5;
+  margin: 0 0 4px;
+}
+
+.page-subtitle {
+  color: #6b6f84;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Stat Cards Grid ────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.stat-card {
+  background: #1a1d2e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent, #3b82f6);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #f0f1f5;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: #6b6f84;
+  margin-top: 4px;
+}
+
+/* ── Dashboard Section ──────────────────── */
+.dashboard-section {
+  background: #1a1d2e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.dashboard-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e2e4ed;
+  margin: 0 0 20px;
+}
+
+/* ── Empty State ────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #6b6f84;
+}
+
+.empty-state p {
+  margin-bottom: 16px;
+}
+
+/* ── Animations ─────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #6b6f84;
+  font-size: 1rem;
+}
