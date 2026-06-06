@@ -11,20 +11,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ── Middleware ──────────────────────────────────────────
-const corsOrigins = process.env.CORS_ORIGIN 
-  ? process.env.CORS_ORIGIN.split(",") 
-  : ["http://localhost:5173", "http://localhost:5174"];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, or server-to-server)
-    if (!origin) return callback(null, true);
-    if (corsOrigins.indexOf(origin) !== -1 || corsOrigins.includes("*")) {
-      return callback(null, true);
-    }
-    return callback(new Error(`CORS policy blocked access from origin: ${origin}`));
-  },
-  credentials: true
+  origin: "http://127.0.0.1:5173",
+  credentials: true,
 }));
 app.use(express.json());
 
