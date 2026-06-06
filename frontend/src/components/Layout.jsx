@@ -10,6 +10,7 @@ import {
   FileSpreadsheet,
   Receipt,
   Users,
+  KeyRound,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -44,6 +45,11 @@ export default function Layout() {
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleChangePassword = () => {
+    navigate("/change-password");
+    setMobileOpen(false);
   };
 
   const avatarLetter = user?.name ? user.name.charAt(0).toUpperCase() : "U";
@@ -99,6 +105,9 @@ export default function Layout() {
                 <span className="user-role">{formattedRole}</span>
               </div>
             )}
+            <button className="change-password-btn" onClick={handleChangePassword} title="Change password">
+              <KeyRound size={16} />
+            </button>
             <button className="logout-btn" onClick={handleLogout} title="Logout">
               <LogOut size={16} />
             </button>

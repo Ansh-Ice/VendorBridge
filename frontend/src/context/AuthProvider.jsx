@@ -46,7 +46,16 @@ export function AuthProvider({ children }) {
   const register = useCallback(async (name, email, password, role) => {
     setLoading(true);
     try {
-      const response = await authApi.register({ name, email, password, role });
+      return await authApi.register({ name, email, password, role });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const verifyRegistrationOtp = useCallback(async (email, otp) => {
+    setLoading(true);
+    try {
+      const response = await authApi.verifyRegistrationOtp({ email, otp });
       const { user: userData, token } = response.data;
       localStorage.setItem("token", token);
       setUser(userData);
@@ -66,6 +75,7 @@ export function AuthProvider({ children }) {
     loading,
     login,
     register,
+    verifyRegistrationOtp,
     logout,
     isAuthenticated: !!user,
   };
