@@ -1,6 +1,7 @@
 // Sidebar layout with navigation
 
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Layout.css";
 
 const navItems = [
@@ -11,6 +12,14 @@ const navItems = [
 ];
 
 export default function Layout() {
+  const { user, logout } = useAuth();
+  
+  // Get first letter of user name for avatar
+  const avatarLetter = user?.name ? user.name.charAt(0).toUpperCase() : "U";
+  
+  // Format role name
+  const formattedRole = user?.role ? user.role.charAt(0) + user.role.slice(1).toLowerCase() : "User";
+
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -35,11 +44,14 @@ export default function Layout() {
         </nav>
         <div className="sidebar-footer">
           <div className="user-badge">
-            <div className="user-avatar">A</div>
+            <div className="user-avatar">{avatarLetter}</div>
             <div className="user-info">
-              <span className="user-name">Admin</span>
-              <span className="user-role">Procurement</span>
+              <span className="user-name">{user?.name || "User"}</span>
+              <span className="user-role">{formattedRole}</span>
             </div>
+            <button className="logout-btn" onClick={logout} title="Logout">
+              🚪
+            </button>
           </div>
         </div>
       </aside>
@@ -49,3 +61,4 @@ export default function Layout() {
     </div>
   );
 }
+
