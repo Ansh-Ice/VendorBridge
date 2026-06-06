@@ -10,7 +10,6 @@ import {
   FileSpreadsheet,
   Receipt,
   Users,
-  Settings,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -34,9 +33,9 @@ export default function Layout() {
     { to: "/approvals", icon: CheckSquare, label: "Approvals", roles: ["ADMIN", "APPROVER"] },
     { to: "/purchase-orders", icon: FileCheck, label: "Purchase Orders", roles: ["ADMIN", "PROCUREMENT_OFFICER", "VENDOR"] },
     { to: "/invoices", icon: Receipt, label: "Invoices", roles: ["ADMIN", "PROCUREMENT_OFFICER", "VENDOR"] },
-    { to: "/admin/users", icon: Users, label: "Users", roles: ["ADMIN"] },
-    { to: "/settings", icon: Settings, label: "Settings", roles: ["ADMIN", "PROCUREMENT_OFFICER", "APPROVER", "VENDOR"] },
+    { to: "/users", icon: Users, label: "Users", roles: ["ADMIN"] },
   ];
+
 
   const filteredNavItems = allNavItems.filter((item) =>
     user?.role ? item.roles.includes(user.role) : false

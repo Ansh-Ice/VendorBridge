@@ -21,6 +21,8 @@ import InvoiceDetail from "./features/invoices/InvoiceDetail";
 import Landing from "./features/landing/Landing";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
+import UserList from "./features/users/UserList";
+
 
 export default function App() {
   return (
@@ -78,6 +80,11 @@ export default function App() {
               <Route element={<ProtectedRoute allowedRoles={["ADMIN", "PROCUREMENT_OFFICER"]} />}>
                 <Route path="rfqs/create" element={<RFQCreate />} />
                 <Route path="quotations" element={<QuotationList />} />
+              </Route>
+
+              {/* Admin only */}
+              <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+                <Route path="users" element={<UserList />} />
               </Route>
             </Route>
           </Routes>
